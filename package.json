@@ -4,11 +4,24 @@
   "description": "a Telegraf middleware for reading data from google drive",
   "main": "index.js",
   "repository": {
-      "url": "git@github.com:fredmarques/telegraf-googledrive.git",
-      "type": "git"
+    "url": "git@github.com:fredmarques/telegraf-googledrive.git",
+    "type": "git"
+  },
+  "babel": {
+    "plugins": [
+      "transform-es2015-modules-commonjs",
+      "transform-object-rest-spread"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "mnmo"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:dev": "`npm bin`/babel-node ./src/index.js",
+    "build": "rm -rf dist/ && babel --ignore node_modules,dist,tasks,config.*,test/ --out-dir ./dist/npm . && cp LICENSE package.json yarn.lock ./dist/npm",
+    "publish:npm": "npm run build && npm publish dist/npm",
+    "ppp": "npm version patch && git push && git push --tags && npm run publish:npm",
+    "mpp": "npm version minor && git push && git push --tags && npm run publish:npm"
   },
   "keywords": [
     "Telegraf",
@@ -17,5 +30,15 @@
     "drive"
   ],
   "author": "Frederico Marques <frederico.marques.22@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^3.9.1",
+    "eslint-config-mnmo": "^3.0.0",
+    "babel-cli": "^6.16.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.16.0",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0"
+  },
+  "dependencies": {
+    "googleapis": "^14.1.0"
+  }
 }
