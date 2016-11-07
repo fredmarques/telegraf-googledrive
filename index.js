@@ -74,9 +74,9 @@ const foldersHandler = (ctx, next) => (err, res, rootId) => {
 
 const sendReply = (ctx, next) => (fileType, file) => {
     if (fileType === 'document') {
-        ctx.replyWithDocument(file);
+        ctx.replyWithDocument( { source: file });
     } else if (fileType === 'video') {
-        ctx.replyWithVideo(file);
+        ctx.replyWithVideo( { source: file });
     }
     next();
 };
@@ -108,12 +108,14 @@ const createGetFolderMiddleware = params => (ctx, next) => {
 };
 
 const replyFileMiddleware = params => (ctx, next) => {
-    const { fileId, fileType, path } = params;
-    return getReplyFile(fileId, fileType, path, sendReply(ctx, next));
+    const { fileId, fileType } = ctx.state.currentFile;
+    const { path, auth } = params;
+    return getReplyFile(fileId, fileType, path, auth, sendReply(ctx, next));
 };
 
 const setDescriptionMiddleware = params => (ctx, next) => {
     const { path, auth } = params;
+    console.log('path e auth', path, auth);
     return getDescription(ctx.state.folders.descriptionId, path, auth, setDescription(ctx, next));
 };
 
