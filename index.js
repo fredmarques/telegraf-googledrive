@@ -21,6 +21,9 @@ const getFolder = (rootId, fields, auth, callback) => {
 };
 
 const getReplyFile = (fileId, fileType, path, auth, callback) => {
+    if (!fileId) {
+        return callback(null);
+    }
     const dest = fs.createWriteStream(`${path}/${fileId}`);
     drive.files.get({
         fileId
@@ -37,6 +40,9 @@ const getReplyFile = (fileId, fileType, path, auth, callback) => {
 };
 
 const getDescription = (fileId, path, auth, callback) => {
+    if (!fileId) {
+        return callback(null);
+    }
     const dest = fs.createWriteStream(`${path}/${fileId}`);
     return drive.files.get({
         fileId
@@ -61,7 +67,8 @@ const foldersHandler = (ctx, next) => (err, res, rootId) => {
         console.log(err);
         return next();
     }
-    const descriptionId = res.files.filter(f => f.name === 'README.md' && !f.trashed)[0].id;
+    const firstDescription = res.files.find(f => f.name === 'README.md' && !f.trashed);
+    const descriptionId = firstDescription ? firstDescription.id : null;
     const files = res.files.filter(f => !f.trashed);
     const nextState = extend(ctx.state,
         { folders: {
@@ -82,6 +89,9 @@ const sendReply = (ctx, next) => (fileType, file) => {
 };
 
 const setDescription = (ctx, next) => path => { //eslint-disable-line
+    if (!path) {
+        return next();
+    }
     return fs.readFile(path, 'utf8', (err, data) => {
         if (err) {
             console.log(err);
