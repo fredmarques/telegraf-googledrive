@@ -114,7 +114,7 @@ const setDescription = (ctx, next) => path => { //eslint-disable-line
  */
 const createGetFolderMiddleware = params => (ctx, next) => {
     const { fields, rootId, auth } = params;
-    return getFolder(rootId, fields, auth, foldersHandler(ctx, next));
+    return getFolder(rootId || ctx.state.rootId, fields, auth, foldersHandler(ctx, next));
 };
 
 const replyFileMiddleware = params => (ctx, next) => {
