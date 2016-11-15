@@ -1,6 +1,6 @@
 {
   "name": "telegraf-googledrive",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "a Telegraf middleware for reading data from google drive",
   "main": "index.js",
   "repository": {
