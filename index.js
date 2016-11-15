@@ -20,18 +20,19 @@ const getFolder = (rootId, fields, auth, callback) => {
     }, (err, res) => callback(err, res, rootId));
 };
 
-const getReplyFile = (fileId, fileType, path, auth, callback) => {
+const getReplyFile = (fileId, fileType, fileExtension, path, auth, callback) => {
     if (!fileId) {
         return callback(null);
     }
-    const dest = fs.createWriteStream(`${path}/${fileId}`);
+    const filePath = `${path}/${fileId}.${fileExtension}`;
+    const dest = fs.createWriteStream(filePath);
     drive.files.get({
         fileId
         , auth
         , alt: 'media'
     })
     .on('end', () => {
-        callback(fileType, `${path}/${fileId}`);
+        callback(fileType, filePath);
     })
     .on('error', err => {
         console.log('Error during download', err);
@@ -118,9 +119,9 @@ const createGetFolderMiddleware = params => (ctx, next) => {
 };
 
 const replyFileMiddleware = params => (ctx, next) => {
-    const { fileId, fileType } = ctx.state.currentFile;
+    const { fileId, fileType, fileExtension } = ctx.state.currentFile;
     const { path, auth } = params;
-    return getReplyFile(fileId, fileType, path, auth, sendReply(ctx, next));
+    return getReplyFile(fileId, fileType, fileExtension, path, auth, sendReply(ctx, next));
 };
 
 const setDescriptionMiddleware = params => (ctx, next) => {
