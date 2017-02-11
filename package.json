@@ -32,13 +32,13 @@
   "author": "Frederico Marques <frederico.marques.22@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^3.9.1",
-    "eslint-config-mnmo": "^3.0.0",
     "babel-cli": "^6.16.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.16.0",
-    "babel-plugin-transform-object-rest-spread": "^6.16.0"
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
+    "eslint": "^3.9.1",
+    "eslint-config-mnmo": "^3.0.0"
   },
   "dependencies": {
-    "googleapis": "^14.1.0"
+    "googleapis": "^16.1.0"
   }
 }
